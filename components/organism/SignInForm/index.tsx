@@ -1,9 +1,14 @@
+/**
+ * Menggunakan JWT decode, JWT cookies
+ */
+
 import Link from "next/link";
 import React, { useState } from "react";
 import { setLogin } from "../../../services/auth";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useRouter } from "next/router";
+import Cookies from 'js-cookie'
 
 export default function SignInForm() {
   const [email, setEmail] = useState("");
@@ -25,6 +30,11 @@ export default function SignInForm() {
         toast.error(result.message)
       } else {
         toast.success("Login Success")
+        console.log(result);
+        const {token} = result.data
+        const tokenBase64 = btoa(token)  //ngerubah tokennya jadi base64
+        console.log("token base64: " , tokenBase64);
+        Cookies.set('token', tokenBase64, {expires: 1 })
         router.push('/')
       }
     
