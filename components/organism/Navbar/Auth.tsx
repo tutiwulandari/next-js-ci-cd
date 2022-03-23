@@ -2,7 +2,8 @@ import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import jwtDecode from "jwt-decode";
-
+import { JWTPayloadTypes, UserTypes } from "../../../services/data-types";
+import {useRouter} from "next/router";
 
 export default function Auth() {
   const [isLogin, setIsLogin] = useState(false);
@@ -13,21 +14,28 @@ export default function Auth() {
     name: "",
     username: "",
   });
+  const router = useRouter();
 
   useEffect(() => {
     const token = Cookies.get("token");
-    if(token) {
+    if (token) {
       const jwtToken = atob(token); //encode menjadi jwtToken
-      const payload = jwtDecode(jwtToken);
-      const user = payload.player
-      const IMG = process.env.NEXT_PUBLIC_IMG
+      const payload: JWTPayloadTypes = jwtDecode(jwtToken);
+      const userFromPayload: UserTypes = payload.player;
+      const IMG = process.env.NEXT_PUBLIC_IMG;
       console.log(user.avatar);
-      
-      user.avatar = `https://api-bwa-storegg.herokuapp.com/uploads/${user.avatar}`
-      setIsLogin(true)
-      setUser(user)
+
+      user.avatar = `https://api-bwa-storegg.herokuapp.com/uploads/${userFromPayload.avatar}`;
+      setIsLogin(true);
+      setUser(user);
     }
   });
+
+  const onLogout = () => {
+    Cookies.remove("token");
+    router.push('/')
+    setIsLogin(false);
+  }
 
   if (isLogin) {
     return (
@@ -75,10 +83,8 @@ export default function Auth() {
                 </a>
               </Link>
             </li>
-            <li>
-              <Link href="sign-in">
-                <a className="dropdown-item text-lg color-palette-2">Log Out</a>
-              </Link>
+            <li onClick={onLogout}>
+              <a className="dropdown-item text-lg color-palette-2">Log Out</a>
             </li>
           </ul>
         </div>
