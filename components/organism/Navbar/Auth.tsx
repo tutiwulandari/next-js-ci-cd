@@ -22,12 +22,12 @@ export default function Auth() {
       const jwtToken = atob(token); //encode menjadi jwtToken
       const payload: JWTPayloadTypes = jwtDecode(jwtToken);
       const userFromPayload: UserTypes = payload.player;
-      const IMG = process.env.NEXT_PUBLIC_IMG;
-      console.log(user.avatar);
-
-      user.avatar = `https://api-bwa-storegg.herokuapp.com/uploads/${userFromPayload.avatar}`;
+      // const IMG = process.env.NEXT_PUBLIC_IMG;
+      // console.log(user.avatar);
+      // user.avatar = `https://api-bwa-storegg.herokuapp.com/uploads/${userFromPayload.avatar}`;
       setIsLogin(true);
-      setUser(user);
+      setUser(userFromPayload);
+      
     }
   });
 

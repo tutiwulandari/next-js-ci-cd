@@ -116,7 +116,7 @@ export default function SignUpSuccess() {
                     dan menjadi pemenang!</p>
             </div>
             <div className="button-group d-flex flex-column mx-auto">
-               <Link href="/">
+               <Link href="/sign-in">
                <a className="btn btn-top-up fw-medium text-lg text-white rounded-pill" 
                   >Top
                     Up</a>
